@@ -18,8 +18,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
+# Requires Flutter SDK >= 3.38.0 (secure_device_signature via flutter_face_biometrics).
+# If pub get fails, run: flutter upgrade  or install Flutter 3.41.1+
 environment:
-  sdk: '>=3.8.1 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -27,6 +29,7 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
 dependencies:
   flutter:
     sdk: flutter
@@ -34,15 +37,15 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_face_biometrics:
+    path: packages/flutter_face_biometrics
 
-  biometric_face_vault:
-    git:
-      url: https://github.com/alrashidi7/biometric_face_vault_package.git
-      ref: main
-  device_integrity_signature:
-    git:
-      url: https://github.com/alrashidi7/device_integrity_signature.git
-      ref: main
+
+# Use local patched secure_device_signature to fix Gradle "provider has no value" error.
+# The upstream git package uses AGP 8.1.0 which conflicts with this project's AGP 8.11.1.
+dependency_overrides:
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,9 +69,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - packages/flutter_face_biometrics/assets/models/facenet.tflite
+    - packages/flutter_face_biometrics/assets/models/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
